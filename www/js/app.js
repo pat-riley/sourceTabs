@@ -8,7 +8,10 @@
 angular.module('starter', [
   'ionic', 
   'starter.controllers', 
-  'starter.services'
+  'starter.services',
+  'auth0',
+  'angular-storage',
+  'angular-jwt'
 ])
 
 .run(function($ionicPlatform) {
@@ -25,7 +28,7 @@ angular.module('starter', [
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, authProvider, $httpProvider, jwtInterceptorProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
@@ -55,7 +58,13 @@ angular.module('starter', [
   .state('tabs', {
     url: '/tab',
     abstract: true,
-    templateUrl: 'templates/tabs.html'
+    templateUrl: 'templates/tabs.html',
+    data: {
+      // This tells Auth0 that this state requires the user to be logged in.
+      // If the user isn't logged in and he tries to access this state
+      // he'll be redirected to the login page
+      requiresLogin: true
+    }
   })
 
   .state('tabs.home', {
@@ -92,13 +101,45 @@ angular.module('starter', [
   })
 
 
+    authProvider.init({
+      domain: 'source.auth0.com',
+      clientID: '5md4FZ4xtmmiMyUfiiIfccAGTXdSR8cJ',
+      callbackURL: location.href,
+    });
+
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/landing');
 
+    jwtInterceptorProvider.tokenGetter = function(store, jwtHelper, auth) {
+      var idToken = store.get('token');
+      var refreshToken = store.get('refreshToken');
+
+      if (!idToken || !refreshToken) {
+        return null;
+      }
+      if (jwtHelper.isTokenExpired(idToken)) {
+        return auth.refreshIdToken(refreshToken).then(function(idToken) {
+          store.set('token', idToken);
+          return idToken;
+        });
+      } else {
+        return idToken;
+      }
+    }
 
 
+  $httpProvider.interceptors.push('jwtInterceptor');
 
+})
 
-
+  .run(function($rootScope, auth, store) {
+    $rootScope.$on('$locationChangeStart', function() {
+      if (!auth.isAuthenticated) {
+        var token = store.get('token');
+        if (token) {
+          auth.authenticate(store.get('profile'), token);
+        }
+      }
+    });
 });

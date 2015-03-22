@@ -1,21 +1,23 @@
 <ion-view view-title="Signup">
         <ion-content>
           <div class="list">
-            <label class="item item-input">
-              <span class="input-label">Username</span>
-              <input type="text" ng-model="user.username">
-            </label>
-            <label class="item item-input">
-              <span class="input-label">Email</span>
-              <input type="text" ng-model="user.email">
-            </label>
-            <label class="item item-input">
-              <span class="input-label">Password</span>
-              <input type="password" ng-model="user.password">
-            </label>
+          <!-- Email -->
+          <label class="item item-input">
+            <span class="input-label">Email</span><input type="text" ng-model="signupForm.email">
+          </label>
+
+          <!-- Password -->
+          <label class="item item-input">
+            <span class="input-label">Password</span><input type="password" ng-model="signupForm.password">
+          </label>
+
+          <!-- Username -->
+          <label class="item item-input">
+            <span class="input-label">Username</span><input type="text" ng-model="signupForm.username">
+          </label>
           </div>
           <div class="padding">
-            <button class="button button-block button-positive" ng-click="signUp(user)">
+            <button class="button button-block button-positive" ng-click="signup()">
               Create an Account
             </button>
             <p class="text-center">
