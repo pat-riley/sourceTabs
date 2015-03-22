@@ -1,9 +1,13 @@
-<ion-view view-title="Login">
+<ion-view view-title="Signup">
         <ion-content>
           <div class="list">
             <label class="item item-input">
               <span class="input-label">Username</span>
               <input type="text" ng-model="user.username">
+            </label>
+            <label class="item item-input">
+              <span class="input-label">Email</span>
+              <input type="text" ng-model="user.email">
             </label>
             <label class="item item-input">
               <span class="input-label">Password</span>
@@ -12,10 +16,10 @@
           </div>
           <div class="padding">
             <button class="button button-block button-positive" ng-click="signIn(user)">
-              Login
+              Create an Account
             </button>
             <p class="text-center">
-              <a href="#/signup">Sign Up</a>
+              <a href="#/login">Or, Login</a>
             </p>
           </div>
         </ion-content>

@@ -27,13 +27,25 @@ angular.module('starter', [
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, authProvider, $httpProvider, jwtInterceptorProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
   $stateProvider
+
+  // Set up an abstrract state for the login directive
+  .state('login', {
+      url: '/login',
+      templateUrl: 'templates/login.html'
+  })
+
+  .state('signup', {
+      url: '/signup',
+      templateUrl: 'templates/signup.html'
+  })
+
 
   // setup an abstract state for the tabs directive
   .state('tab', {
@@ -85,7 +97,19 @@ angular.module('starter', [
     }
   });
 
+  authProvider.init({
+    domain: 'source.auth0.com',
+    clientID: '5md4FZ4xtmmiMyUfiiIfccAGTXdSR8cJ',
+    callbackURL: location.href,
+  });
+
+
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/dash');
+  $urlRouterProvider.otherwise('/login');
+
+
+
+
+
 
 });
