@@ -28,4 +28,9 @@ angular.module('starter.controllers', [])
     $state.go('tabs.home');
   };
 
+  $scope.signUp = function(user) {
+    console.log('Signing Up...', user);
+    $state.go('tabs.home');
+  };
+
 });
