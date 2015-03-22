@@ -17,4 +17,15 @@ angular.module('starter.controllers', [])
   $scope.settings = {
     enableFriends: true
   };
+})
+
+
+
+.controller('loginCtrl', function($scope, $state) {
+
+  $scope.logIn = function(user) {
+    console.log('Logging in...', user);
+    $state.go('tabs.home');
+  };
+
 });

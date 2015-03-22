@@ -8,9 +8,7 @@
 angular.module('starter', [
   'ionic', 
   'starter.controllers', 
-  'starter.services',
-  'auth0',
-  'angular-storage','angular-jwt'
+  'starter.services'
 ])
 
 .run(function($ionicPlatform) {
@@ -27,7 +25,7 @@ angular.module('starter', [
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider, authProvider, $httpProvider, jwtInterceptorProvider) {
+.config(function($stateProvider, $urlRouterProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
@@ -35,82 +33,68 @@ angular.module('starter', [
   // Each state's controller can be found in controllers.js
   $stateProvider
 
-  // Set up an abstrract state for the login directive
+  // Set up an abstract state for the login directive
   .state('landing', {
       url: '/landing',
-      templateUrl: 'templates/landing.html'
+      templateUrl: 'templates/landing.html',
+      controller: 'loginCtrl'
   })
-
   .state('login', {
       url: '/login',
-      templateUrl: 'templates/login.html'
+      templateUrl: 'templates/login.html',
+       controller: 'loginCtrl'
   })
-
   .state('signup', {
       url: '/signup',
-      templateUrl: 'templates/signup.html'
+      templateUrl: 'templates/signup.html',
+      controller: 'loginCtrl'
   })
 
 
   // setup an abstract state for the tabs directive
-  .state('tab', {
-    url: "/tab",
+  .state('tabs', {
+    url: '/tab',
     abstract: true,
-    templateUrl: "templates/tabs.html"
+    templateUrl: 'templates/tabs.html'
   })
 
-  // Each tab has its own nav history stack:
-
-  .state('tab.dash', {
-    url: '/dash',
+  .state('tabs.home', {
+    url: '/home',
     views: {
-      'tab-dash': {
-        templateUrl: 'templates/tab-dash.html',
-        controller: 'DashCtrl'
+      'home-tab': {
+        templateUrl: 'templates/home.html'
       }
     }
   })
-
-  .state('tab.explore', {
+  .state('tabs.explore', {
     url: '/explore',
     views: {
-      'tab-explore': {
-        templateUrl: 'templates/tab-explore.html',
-        controller: 'DashCtrl'
+      'explore-tab': {
+        templateUrl: 'templates/explore.html'
+      }
+    }
+  })
+  .state('tabs.notifications', {
+    url: '/notifications',
+    views: {
+      'notifications-tab': {
+        templateUrl: 'templates/notifications.html'
+      }
+    }
+  })
+  .state('tabs.profile', {
+    url: '/profile',
+    views: {
+      'profile-tab': {
+        templateUrl: 'templates/profile.html'
       }
     }
   })
 
-  .state('tab.notifications', {
-      url: '/notifications',
-      views: {
-        'tab-notifications': {
-          templateUrl: 'templates/tab-notifications.html',
-          controller: 'DashCtrl'
-        }
-      }
-    })
-
-
-  .state('tab.profile', {
-    url: '/profile',
-    views: {
-      'tab-profile': {
-        templateUrl: 'templates/tab-profile.html',
-        controller: 'ProfileCtrl'
-      }
-    }
-  });
-
-  authProvider.init({
-    domain: 'source.auth0.com',
-    clientID: '5md4FZ4xtmmiMyUfiiIfccAGTXdSR8cJ',
-    callbackURL: location.href,
-  });
 
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/login');
+  $urlRouterProvider.otherwise('/landing');
 
 
 
