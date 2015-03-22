@@ -36,6 +36,11 @@ angular.module('starter', [
   $stateProvider
 
   // Set up an abstrract state for the login directive
+  .state('landing', {
+      url: '/landing',
+      templateUrl: 'templates/landing.html'
+  })
+
   .state('login', {
       url: '/login',
       templateUrl: 'templates/login.html'
